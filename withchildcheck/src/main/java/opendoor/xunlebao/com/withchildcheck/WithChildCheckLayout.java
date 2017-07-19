@@ -2,6 +2,7 @@ package opendoor.xunlebao.com.withchildcheck;
 
 import android.content.Context;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
@@ -29,6 +30,9 @@ public class WithChildCheckLayout extends FrameLayout implements Checkable {
     private CompoundButton.OnCheckedChangeListener mOnCheckChangeListener;
     private boolean mChecked;
     private boolean mBroadcasting = false;
+    private static final int[] CHECKED_STATE_SET = {
+            android.R.attr.state_checked
+    };
 
     public WithChildCheckLayout(@NonNull Context context) {
         super(context);
@@ -69,6 +73,26 @@ public class WithChildCheckLayout extends FrameLayout implements Checkable {
             }
             setChildChecked(this, mChecked);
             mBroadcasting = false;
+        }
+    }
+
+    @Override
+    protected int[] onCreateDrawableState(int extraSpace) {
+        final int[] drawableState = super.onCreateDrawableState(extraSpace + 1);
+        if (isChecked()) {
+            mergeDrawableStates(drawableState, CHECKED_STATE_SET);
+        }
+        return drawableState;
+    }
+
+    @Override
+    protected void drawableStateChanged() {
+        super.drawableStateChanged();
+
+        final Drawable buttonDrawable = getBackground();
+        if (buttonDrawable != null && buttonDrawable.isStateful()
+                && buttonDrawable.setState(getDrawableState())) {
+            invalidateDrawable(buttonDrawable);
         }
     }
 

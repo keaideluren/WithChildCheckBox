@@ -9,7 +9,8 @@
 
     <opendoor.xunlebao.com.withchildcheck.WithChildCheckLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp">
+        android:layout_height="40dp"
+        android:background="@drawable/selector_checkbox">
 
         <CheckBox
             android:layout_width="wrap_content"
